@@ -54,7 +54,9 @@ define(["../core/Tone", "../core/Param", "../core/Gain", "../signal/SignalBase"]
 	 */
 	Tone.Multiply.prototype.dispose = function(){
 		Tone.Signal.prototype.dispose.call(this);
+            if (this._mult) {
 		this._mult.dispose();
+            }
 		this._mult = null;
 		this._param = null;
 		return this;

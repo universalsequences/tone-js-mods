@@ -216,7 +216,6 @@ define(["../core/Tone", "../core/Buffer", "../source/Source", "../core/Gain",
 			var computedDur = this.toSeconds(duration);
 			//make sure it's never negative
 			computedDur = Math.max(computedDur, 0);
-
 			this.stop(time + computedDur);
 		}
 
@@ -248,7 +247,7 @@ define(["../core/Tone", "../core/Buffer", "../source/Source", "../core/Gain",
 	 *  @param  {Time=}  time         The time the buffer should stop.
 	 *  @return  {Tone.BufferSource}  this
 	 */
-	Tone.BufferSource.prototype.stop = function(time){
+	 Tone.BufferSource.prototype.stop = function(time, fadeOut=this.fadeOut){
 		this.log("stop", time);
 		this.assert(this.buffer.loaded, "buffer is either not set or not loaded");
 		this.assert(!this._sourceStopped, "source is already stopped");
@@ -261,7 +260,7 @@ define(["../core/Tone", "../core/Buffer", "../source/Source", "../core/Gain",
 		}
 
 		//the fadeOut time
-		var fadeOutTime = this.toSeconds(this.fadeOut);
+		var fadeOutTime = this.toSeconds(fadeOut);
 
 		//cancel the previous curve
 		this._stopTime = time + fadeOutTime;

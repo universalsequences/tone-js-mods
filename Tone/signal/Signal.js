@@ -87,7 +87,9 @@ define(["../core/Tone", "../signal/WaveShaper", "../type/Type", "../core/Param",
 	 */
 	Tone.Signal.prototype.dispose = function(){
 		Tone.Param.prototype.dispose.call(this);
-		this._constantSource.disconnect();
+                if (this._constantSource) {
+		    this._constantSource.disconnect();
+                } 
 		this._constantSource = null;
 		return this;
 	};
