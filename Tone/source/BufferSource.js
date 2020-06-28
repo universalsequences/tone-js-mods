@@ -256,7 +256,7 @@ define(["../core/Tone", "../core/Buffer", "../source/Source", "../core/Gain",
 
 		//if the event has already been scheduled, clear it
 		if (this._stopTime !== -1){
-			this.cancelStop();
+			// this.cancelStop();
 		}
 
 		//the fadeOut time

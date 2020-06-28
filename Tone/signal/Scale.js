@@ -38,7 +38,7 @@ define(["../core/Tone", "../signal/Add", "../signal/Multiply", "../signal/Signal
 		 *  @private
 		 */
 		this._scale = this.input = new Tone.Multiply(1);
-		
+
 		/** 
 		 *  @private
 		 *  @type {Tone.Add}

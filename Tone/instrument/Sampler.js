@@ -211,16 +211,15 @@ Tone.Sampler.prototype.triggerRelease = function(notes, time, releaseTime){
  * @param  {Time=} time     	When to release the notes.
  * @return {Tone.Sampler}	this
  */
-Tone.Sampler.prototype.releaseAll = function(time){
+Tone.Sampler.prototype.releaseAll = function(time, fadeOut=0.1){
 	time = this.toSeconds(time);
 	for (var note in this._activeSources){
 		var sources = this._activeSources[note];
 		while (sources.length){
 			var source = sources.shift();
                         let savedCurve = this.curve;
-                        source.curve = 'exponential';
-                        source.fadeOut = 0.1;
-			source.stop(time);
+                        source.curve = 'linear';
+		    source.stop(time, fadeOut);
                         source.curve = savedCurve;
 		}
 	}
