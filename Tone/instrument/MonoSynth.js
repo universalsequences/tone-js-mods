@@ -72,7 +72,7 @@ define(["../core/Tone", "../component/AmplitudeEnvelope", "../component/Frequenc
 		this.oscillator.chain(this.filter, this.envelope, this.output);
 		//connect the filter envelope
 		this.filterEnvelope.connect(this.filter.frequency);
-		this._readOnly(["oscillator", "frequency", "detune", "filter", "filterEnvelope", "envelope"]);
+		this._readOnly(["oscillator",  "detune", "filter", "filterEnvelope", "envelope"]);
 	};
 
 	Tone.extend(Tone.MonoSynth, Tone.Monophonic);

@@ -50,7 +50,7 @@ define(["../core/Tone", "../component/AmplitudeEnvelope", "../source/OmniOscilla
 
 		//connect the oscillators to the output
 		this.oscillator.chain(this.envelope, this.output);
-		this._readOnly(["oscillator", "frequency", "detune", "envelope"]);
+		this._readOnly(["oscillator",  "detune", "envelope"]);
 	};
 
 	Tone.extend(Tone.Synth, Tone.Monophonic);
