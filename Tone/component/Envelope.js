@@ -267,6 +267,10 @@ define(["../core/Tone", "../signal/Signal",
 			//the attack is now the remaining time
 			attack = remainingDistance / attackRate;
 		}
+
+            if (!window.envelopeTest && this._releaseCurve === 'end') {
+		this._sig.cancelAndHoldAtTime(time);
+            }
 		//attack
 		if (this._attackCurve === "linear"){
 			this._sig.linearRampTo(velocity, attack, time);
@@ -319,7 +323,11 @@ define(["../core/Tone", "../signal/Signal",
 				this._sig.linearRampTo(0, release, time);
 			} else if (this._releaseCurve === "exponential"){
 				this._sig.targetRampTo(0, release, time);
-			} else {
+			} else if (this._releaseCurve === 'end') {
+                            // hold the value until the very end, at which time
+                            // you release with 8 ms
+			    this._sig.linearRampTo(0, window.p1, time + release + window.p2);
+                        } else {
 				var curve = this._releaseCurve;
 				if (Tone.isArray(curve)){
 					this._sig.cancelAndHoldAtTime(time);
@@ -451,6 +459,7 @@ define(["../core/Tone", "../signal/Signal",
 		Tone.Envelope.Type = {
 			"linear" : "linear",
 			"exponential" : "exponential",
+			"end" : "end",
 			"bounce" : {
 				In : invertCurve(bounceCurve),
 				Out : bounceCurve

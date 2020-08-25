@@ -163,9 +163,11 @@ Tone.Sampler.prototype.triggerAttack = function(notes, time, velocity, start=0, 
 					this._activeSources[midi].splice(index, 1);
 				}
 			}
-                    setTimeout(() => {
-                        source.dispose();
-                    }, 5000);
+                    if (!this.context.isOffline) {
+                        setTimeout(() => {
+                            source.dispose();
+                        }, 5000);
+                    }
 
                     if (onended) {
                         onended(source);

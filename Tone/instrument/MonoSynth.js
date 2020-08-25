@@ -69,7 +69,7 @@ define(["../core/Tone", "../component/AmplitudeEnvelope", "../component/Frequenc
 		this.envelope = new Tone.AmplitudeEnvelope(options.envelope);
 
 		//connect the oscillators to the output
-		this.oscillator.chain(this.filter, this.envelope, this.output);
+		this.oscillator.chain(this.envelope, this.output);
 		//connect the filter envelope
 		this.filterEnvelope.connect(this.filter.frequency);
 		this._readOnly(["oscillator",  "detune", "filter", "filterEnvelope", "envelope"]);

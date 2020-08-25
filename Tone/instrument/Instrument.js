@@ -16,10 +16,10 @@ define(["../core/Tone", "../type/Type", "../core/Master"], function(Tone){
 
 		/**
 		 *  The output and volume triming node
-		 *  @type  {Tone.Volume}
+		 *  @type  {Tone.Gain}
 		 *  @private
 		 */
-		this._volume = this.output = new Tone.Volume(options.volume);
+		this._volume = this.output = new Tone.Gain(options.volume);
 
 		/**
 		 * The volume of the output in decibels.
@@ -28,7 +28,7 @@ define(["../core/Tone", "../type/Type", "../core/Master"], function(Tone){
 		 * @example
 		 * source.volume.value = -6;
 		 */
-		this.volume = this._volume.volume;
+		this.volume = this._volume.gain;
 		this._readOnly("volume");
 
 		/**
@@ -48,7 +48,7 @@ define(["../core/Tone", "../type/Type", "../core/Master"], function(Tone){
 	 */
 	Tone.Instrument.defaults = {
 		/** the volume of the output in decibels */
-		"volume" : 0
+		"volume" : 1
 	};
 
 	/**

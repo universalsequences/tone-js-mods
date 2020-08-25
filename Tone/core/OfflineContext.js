@@ -15,6 +15,7 @@ define(["../core/Tone", "../core/Context", "../shim/OfflineAudioContext"], funct
 		 *  @type  {OfflineAudioContext}
 		 */
 		var offlineContext = new OfflineAudioContext(channels, duration * sampleRate, sampleRate);
+                this.isOffline = true;
 
 		//wrap the methods/members
 		Tone.Context.call(this, {
