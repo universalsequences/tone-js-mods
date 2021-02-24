@@ -66,10 +66,10 @@ define(["../core/Tone", "../instrument/Instrument", "../signal/Signal"], functio
 	 *  @example
 	 * synth.triggerRelease();
 	 */
-	Tone.Monophonic.prototype.triggerRelease = function(time){
+         Tone.Monophonic.prototype.triggerRelease = function(time, releaseTime){
 		this.log("triggerRelease", time);
 		time = this.toSeconds(time);
-		this._triggerEnvelopeRelease(time);
+	        this._triggerEnvelopeRelease(time, releaseTime);
 		return this;
 	};
 

@@ -120,21 +120,20 @@ function(Tone){
 	 *  @private
 	 */
 	Tone.Oscillator.prototype._start = function(time){
-		this.log("start", time);
-		//new oscillator with previous values
-		this._oscillator = new Tone.OscillatorNode();
-		if (this._wave){
-			this._oscillator.setPeriodicWave(this._wave);
-		} else {
-			this._oscillator.type = this._type;
-		}
-		//connect the control signal to the oscillator frequency & detune
-		this._oscillator.connect(this.output);
-		this.frequency.connect(this._oscillator.frequency);
-		this.detune.connect(this._oscillator.detune);
-		//start the oscillator
-		time = this.toSeconds(time);
-		this._oscillator.start(time);
+	    time = this.toSeconds(time);
+	    this.log("start", time);
+	    //new oscillator with previous values
+	    this._oscillator = new Tone.OscillatorNode();
+	    if (this._wave){
+		this._oscillator.setPeriodicWave(this._wave);
+	    } else {
+		this._oscillator.type = this._type;
+	    }
+	    //connect the control signal to the oscillator frequency & detune
+	    this._oscillator.connect(this.output);
+	    this.frequency.connect(this._oscillator.frequency);
+	    this.detune.connect(this._oscillator.detune);
+	    this._oscillator.start(time);
 	};
 
 	/**
@@ -145,11 +144,11 @@ function(Tone){
 	 */
 	Tone.Oscillator.prototype._stop = function(time){
 		this.log("stop", time);
-		if (this._oscillator){
-			time = this.toSeconds(time);
-			this._oscillator.stop(time);
-		}
-		return this;
+	    if (this._oscillator) {
+		time = this.toSeconds(time);
+		this._oscillator.stop(time);
+	    }
+	    return this;
 	};
 
 	/**
@@ -225,6 +224,22 @@ function(Tone){
 				this._oscillator.setPeriodicWave(this._wave);
 			}
 			this._type = type;
+		}
+	});
+
+	Object.defineProperty(Tone.Oscillator.prototype, "realImaginary", {
+		get : function(){
+			return this._realImaginary;
+		},
+		set : function(coefs){
+		    var periodicWave = this.context.createPeriodicWave(coefs[0], coefs[1]);
+		    this._wave = periodicWave;
+		    // if (this._oscillator !== null){
+                    console.log("SETTING PERIODIC WAVE");
+		    this._oscillator.setPeriodicWave(this._wave);
+		    // }
+		    this._type = "custom";
+                    this._realImaginary = coefs;
 		}
 	});
 

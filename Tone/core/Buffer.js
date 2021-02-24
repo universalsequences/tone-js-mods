@@ -92,6 +92,8 @@ define(["../core/Tone", "../core/Emitter", "../type/Type", "../shim/AudioBuffer"
 	Tone.Buffer.prototype.set = function(buffer){
 		if (buffer instanceof Tone.Buffer){
 			//if it's loaded, set it
+                    this.reversedCopy = undefined;
+                    this.originalCopy = undefined;
 			if (buffer.loaded){
 				this._buffer = buffer.get();
 			} else {
@@ -335,10 +337,34 @@ define(["../core/Tone", "../core/Emitter", "../type/Type", "../shim/AudioBuffer"
 	 *  @private
 	 *  @return {Tone.Buffer} this
 	 */
-	Tone.Buffer.prototype._reverse = function(){
+	Tone.Buffer.prototype._reverse = function(reverse){
 		if (this.loaded){
 			for (var i = 0; i < this.numberOfChannels; i++){
-				Array.prototype.reverse.call(this.getChannelData(i));
+                            if (reverse) {
+                                if (this.reversedCopy && this.reversedCopy[i]) {
+                                    this.getChannelData(i).set(this.reversedCopy[i]);
+                                } else {
+                                    if (!this.originalCopy) {
+                                        this.originalCopy = [];
+                                    }
+                                    this.originalCopy[i] = this.getChannelData(i).slice(0);
+			            Array.prototype.reverse.call(this.getChannelData(i));
+                                }
+                            } else {
+                                if (this.originalCopy && this.originalCopy[i]) {
+                                    if (!this.reversedCopy) {
+                                        this.reversedCopy = [];
+                                    }
+                                    this.reversedCopy[i] = this.getChannelData(i).slice(0);
+                                    this.getChannelData(i).set(this.originalCopy[i]);
+                                } else {
+                                    if (!this.reversedCopy) {
+                                        this.reversedCopy = [];
+                                    }
+                                    this.reversedCopy[i] = this.getChannelData(i).slice(0);
+			            Array.prototype.reverse.call(this.getChannelData(i));
+                                }
+                            }
 			}
 		}
 		return this;
@@ -357,7 +383,7 @@ define(["../core/Tone", "../core/Emitter", "../type/Type", "../shim/AudioBuffer"
 		"set" : function(rev){
 			if (this._reversed !== rev){
 				this._reversed = rev;
-				this._reverse();
+				this._reverse(rev);
 			}
 		},
 	});

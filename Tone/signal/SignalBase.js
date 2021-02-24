@@ -27,6 +27,9 @@ define(["../core/Tone", "../core/AudioNode"], function(Tone){
 	 */
 	Tone.SignalBase.prototype.connect = function(node, outputNumber, inputNumber){
 		//zero it out so that the signal can have full control
+            if (!node) {
+                return;
+            }
 		if ((Tone.Signal && Tone.Signal === node.constructor) ||
 				(Tone.Param && Tone.Param === node.constructor)){
 			//cancel changes

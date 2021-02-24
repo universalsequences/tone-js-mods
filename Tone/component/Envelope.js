@@ -261,19 +261,22 @@ define(["../core/Tone", "../signal/Signal",
 		//check if it's not a complete attack
 		var currentValue = this.getValueAtTime(time);
 		if (currentValue > 0){
+                    // then we need to kill the thing
+                    // this._sig.linearRampTo(0, window.FADER, time);
 			//subtract the current value from the attack time
-			var attackRate = 1 / attack;
-			var remainingDistance = 1 - currentValue;
-			//the attack is now the remaining time
-			attack = remainingDistance / attackRate;
+		    var attackRate = 1 / attack;
+		    var remainingDistance = 1 - currentValue;
+		    //the attack is now the remaining time
+		    attack = remainingDistance / attackRate;
+
+                    if (window.envelopeTest) { //&& this._releaseCurve === 'end') {
+		        this._sig.cancelAndHoldAtTime(time);
+                    }
 		}
 
-            if (!window.envelopeTest && this._releaseCurve === 'end') {
-		this._sig.cancelAndHoldAtTime(time);
-            }
 		//attack
 		if (this._attackCurve === "linear"){
-			this._sig.linearRampTo(velocity, attack, time);
+			this._sig.linearRampTo(velocity, attack /* dur of ramp*/, time /* when to ramp */);
 		} else if (this._attackCurve === "exponential"){
 			this._sig.targetRampTo(velocity, attack, time);
 		} else if (attack > 0){
@@ -313,12 +316,12 @@ define(["../core/Tone", "../signal/Signal",
 	 *  //trigger release immediately
 	 *  env.triggerRelease();
 	 */
-	Tone.Envelope.prototype.triggerRelease = function(time){
+	 Tone.Envelope.prototype.triggerRelease = function(time, release=this.release){
 		this.log("triggerRelease", time);
 		time = this.toSeconds(time);
 		var currentValue = this.getValueAtTime(time);
 		if (currentValue > 0){
-			var release = this.toSeconds(this.release);
+			release = this.toSeconds(release);
 			if (this._releaseCurve === "linear"){
 				this._sig.linearRampTo(0, release, time);
 			} else if (this._releaseCurve === "exponential"){

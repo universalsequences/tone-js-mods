@@ -256,7 +256,7 @@ define(["../core/Tone", "../core/Buffer", "../source/Source", "../core/Gain",
 
 		//if the event has already been scheduled, clear it
 		if (this._stopTime !== -1){
-			// this.cancelStop();
+		    // this.cancelStop();
 		}
 
 		//the fadeOut time
@@ -310,7 +310,8 @@ define(["../core/Tone", "../core/Buffer", "../source/Source", "../core/Gain",
 			//allow additional time for the exponential curve to fully decay
 			var additionalTail = this.curve === "exponential" ? this.fadeOut * 2 : 0;
 			if (this._sourceStarted && this._stopTime !== -1){
-				this._source.stop(this._stopTime + additionalTail);
+                            let time = this._stopTime + additionalTail;
+		            this._source.stop(time);
 			}
 			this.onended(this);
 		}
@@ -355,7 +356,7 @@ define(["../core/Tone", "../core/Buffer", "../source/Source", "../core/Gain",
 	Object.defineProperty(Tone.BufferSource.prototype, "buffer", {
 		get : function(){
 			return this._buffer;
-		},
+                },
 		set : function(buffer){
 			this._buffer.set(buffer);
 		}

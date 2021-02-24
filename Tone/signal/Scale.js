@@ -16,9 +16,10 @@ define(["../core/Tone", "../signal/Add", "../signal/Multiply", "../signal/Signal
 	 * var signal = new Tone.Signal(0.5).connect(scale);
 	 * //the output of scale equals 75
 	 */
-	Tone.Scale = function(outputMin, outputMax){
+    Tone.Scale = function(outputMin, outputMax, rampTime=0.001){
 
 		Tone.SignalBase.call(this);
+        this.rampTime = rampTime;
 		
 		/** 
 		 *  @private
@@ -91,8 +92,8 @@ define(["../core/Tone", "../signal/Add", "../signal/Multiply", "../signal/Signal
 	 *  @private
 	 */
 	Tone.Scale.prototype._setRange = function(){
-		this._add.value = this._outputMin;
-		this._scale.value = this._outputMax - this._outputMin;
+	    this._add.rampTo(this._outputMin, this.rampTime);
+	    this._scale.rampTo(this._outputMax - this._outputMin, this.rampTime);
 	};
 
 	/**

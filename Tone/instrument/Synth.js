@@ -96,10 +96,10 @@ define(["../core/Tone", "../component/AmplitudeEnvelope", "../source/OmniOscilla
 	 *  @returns {Tone.Synth} this
 	 *  @private
 	 */
-	Tone.Synth.prototype._triggerEnvelopeRelease = function(time){
+	 Tone.Synth.prototype._triggerEnvelopeRelease = function(time, releaseTime=this.envelope.release){
 		time = this.toSeconds(time);
 		this.envelope.triggerRelease(time);
-		this.oscillator.stop(time + this.envelope.release);
+		this.oscillator.stop(time + releaseTime);
 		return this;
 	};
 

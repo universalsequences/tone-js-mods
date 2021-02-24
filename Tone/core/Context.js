@@ -166,11 +166,14 @@ define(["../core/Tone", "../core/Emitter", "../core/Timeline", "../shim/AudioCon
 	 *  @return  {Promise}
 	 */
 	Tone.Context.prototype.resume = function(){
+            /*
 		if (this._context.state === "suspended" && this._context instanceof AudioContext){
 			return this._context.resume();
 		} else {
 			return Promise.resolve();
 		}
+            */
+            return Promise.resolve();
 	};
 
 	/**
