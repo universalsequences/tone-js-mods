@@ -42,6 +42,7 @@ define(["../core/Tone", "../core/Buffer"], function(Tone){
 		 *  @private
 		 */
 		this._buffers = {};
+		this._reversedBuffers = {};
 
 		/**
 		 *  A path which is prefixed before every url.
@@ -87,7 +88,7 @@ define(["../core/Tone", "../core/Buffer"], function(Tone){
 	 */
 	Tone.Buffers.prototype.get = function(name){
 		if (this.has(name)){
-			return this._buffers[name];
+		    return this.isReversed ? this._reversedBuffers[name] : this._buffers[name];
 		} else {
 			throw new Error("Tone.Buffers: no buffer named "+name);
 		}
@@ -137,6 +138,7 @@ define(["../core/Tone", "../core/Buffer"], function(Tone){
 		callback = Tone.defaultArg(callback, Tone.noOp);
 		if (url instanceof Tone.Buffer){
 			this._buffers[name] = url;
+                    this._reversedBuffers[name] = this.getReversed(url);
 			callback(this);
 		} else if (url instanceof AudioBuffer){
 			this._buffers[name] = new Tone.Buffer(url);
@@ -146,6 +148,18 @@ define(["../core/Tone", "../core/Buffer"], function(Tone){
 		}
 		return this;
 	};
+
+      
+	Tone.Buffers.prototype.getReversed = function(buffer){
+            let ctxt = Tone.Master.context;
+            let chans = buffer.numberOfChannels;
+            let reversed = ctxt.createBuffer(chans, buffer.getChannelData(0).length, ctxt.sampleRate);
+            for (let i=0; i < chans; i++ ){
+                reversed.copyToChannel(buffer.getChannelData(i), i, 0);
+		Array.prototype.reverse.call(reversed.getChannelData(i));
+            }
+            return new Tone.Buffer(reversed);
+        };
 
 	/**
 	 *  Clean up.

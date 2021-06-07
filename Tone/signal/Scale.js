@@ -92,8 +92,15 @@ define(["../core/Tone", "../signal/Add", "../signal/Multiply", "../signal/Signal
 	 *  @private
 	 */
 	Tone.Scale.prototype._setRange = function(){
-	    this._add.rampTo(this._outputMin, this.rampTime);
-	    this._scale.rampTo(this._outputMax - this._outputMin, this.rampTime);
+            //if (Tone.Master.context.isOffline) {
+                this._add.value = this._outputMin;
+                this._scale.value = this._outputMax - this._outputMin;
+            /*
+            } else {
+	        this._add.rampTo(this._outputMin, this.rampTime);
+	        this._scale.rampTo(this._outputMax - this._outputMin, this.rampTime);
+            }
+            */
 	};
 
 	/**

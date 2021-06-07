@@ -329,7 +329,10 @@ define(["../core/Tone", "../signal/Signal",
 			} else if (this._releaseCurve === 'end') {
                             // hold the value until the very end, at which time
                             // you release with 8 ms
-			    this._sig.linearRampTo(0, window.p1, time + release + window.p2);
+                            if (!window.endTest) {
+                                this._sig.cancelAndHoldAtTime(time);
+			        this._sig.linearRampTo(0, window.p1, time + release + window.p2);
+                            }
                         } else {
 				var curve = this._releaseCurve;
 				if (Tone.isArray(curve)){
